@@ -16,6 +16,11 @@ This project is just a sample for learning, **DO NOT PUBLISH** it at PlayStore o
 * Kotlin
 * MVP ([Model View Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter))
 
+## Requirements
+* AndroidStudio version 3+
+* JDK 1.8
+* API 21 and above
+
 ## Libraries
 * [RxJava](https://github.com/ReactiveX/RxJava)
 * [RxAndroid](https://github.com/ReactiveX/RxAndroid)
