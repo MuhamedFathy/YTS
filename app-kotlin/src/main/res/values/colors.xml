@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="colorPrimary">#212121</color>
+  <color name="colorPrimaryDark">#181818</color>
+  <color name="colorAccent">#6ac045</color>
+  <color name="grey">#2d2d2d</color>
+  <color name="grey2">#535353</color>
+  <color name="lightGrey">#e0e0e0</color>
+  <color name="transBlack">#a0000000</color>
+  <color name="transGrey">#ef212121</color>
+  <color name="transGrey2">#c3171717</color>
+  <color name="colorTransBar">#30000000</color>
+  <color name="ripple_dark">#33ffffff</color>
+</resources>

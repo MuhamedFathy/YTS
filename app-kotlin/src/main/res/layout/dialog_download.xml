@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <ImageView
+      android:id="@+id/dialog_download_iv_quality"
+      android:layout_width="150dp"
+      android:layout_height="100dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="8dp"
+      android:contentDescription="@null"
+      android:scaleType="fitXY"
+      android:src="@drawable/ic_720p_quality"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"/>
+
+  <TextView
+      android:id="@+id/dialog_download_tv_size_title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="8dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="8dp"
+      android:gravity="center"
+      android:text="@string/file_size"
+      android:textSize="16sp"
+      app:layout_constraintEnd_toEndOf="@+id/dialog_download_iv_quality"
+      app:layout_constraintStart_toStartOf="@+id/dialog_download_iv_quality"
+      app:layout_constraintTop_toBottomOf="@+id/dialog_download_iv_quality"/>
+
+  <TextView
+      android:id="@+id/dialog_download_tv_size"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:gravity="center"
+      android:textColor="@android:color/black"
+      android:textSize="16sp"
+      app:layout_constraintEnd_toEndOf="@+id/dialog_download_tv_size_title"
+      app:layout_constraintStart_toStartOf="@+id/dialog_download_tv_size_title"
+      app:layout_constraintTop_toBottomOf="@+id/dialog_download_tv_size_title"
+      fontPath="fonts/Roboto-Medium.ttf"
+      tools:ignore="MissingPrefix"/>
+</android.support.constraint.ConstraintLayout>

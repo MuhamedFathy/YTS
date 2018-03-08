@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<net.mEmoZz.yts.kotlin.ui.widgets.SwipeRefreshView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.main.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+  <android.support.constraint.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:animateLayoutChanges="true">
+
+    <LinearLayout
+        android:id="@+id/main_linear_event_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UseCompoundDrawables">
+
+      <ImageView
+          android:id="@+id/main_iv_event_holder"
+          android:layout_width="120dp"
+          android:layout_height="120dp"
+          android:layout_gravity="center"
+          android:contentDescription="@null"/>
+
+      <TextView
+          android:id="@+id/main_tv_event_older"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:layout_marginTop="8dp"
+          android:textColor="@color/lightGrey"
+          android:textSize="18sp"/>
+    </LinearLayout>
+
+    <com.pnikosis.materialishprogress.ProgressWheel
+        android:id="@+id/main_progress_bar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="4dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:matProg_barColor="@color/colorAccent"
+        app:matProg_barWidth="2dp"
+        app:matProg_progressIndeterminate="true"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/main_recycler_view_movies"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:splitMotionEvents="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/main_linear_loading_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/loading_bg"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="6dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9">
+
+      <com.pnikosis.materialishprogress.ProgressWheel
+          android:layout_width="32dp"
+          android:layout_height="32dp"
+          android:padding="4dp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintRight_toRightOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:matProg_barColor="@color/colorAccent"
+          app:matProg_barWidth="2dp"
+          app:matProg_progressIndeterminate="true"/>
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_margin="8dp"
+          android:text="@string/loading_bar_title"
+          android:textColor="@color/lightGrey"
+          android:textSize="18sp"/>
+    </LinearLayout>
+  </android.support.constraint.ConstraintLayout>
+</net.mEmoZz.yts.kotlin.ui.widgets.SwipeRefreshView>
