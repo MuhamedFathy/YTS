@@ -1,5 +1,6 @@
 package net.mEmoZz.yts.kotlin.ui.detail
 
+import android.Manifest
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -9,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager.HORIZONTAL
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import com.jakewharton.rxbinding2.view.RxView
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_details.collapsing_toolbar
 import kotlinx.android.synthetic.main.activity_details.detail_frame_thumb
 import kotlinx.android.synthetic.main.activity_details.detail_iv_toolbar_trailer_thumb
@@ -42,6 +44,7 @@ import net.mEmoZz.yts.kotlin.data.Quality.Q_720P
 import net.mEmoZz.yts.kotlin.data.Urls
 import net.mEmoZz.yts.kotlin.data.bus.MovieData
 import net.mEmoZz.yts.kotlin.ui.base.BaseActivity
+import net.mEmoZz.yts.kotlin.ui.detail.DetailContract.Presenter
 import net.mEmoZz.yts.kotlin.ui.detail.adapters.pager.ScreenshotsAdapter
 import net.mEmoZz.yts.kotlin.ui.detail.adapters.recycler.CastAdapter
 import net.mEmoZz.yts.kotlin.utilities.DialogUtil
@@ -57,11 +60,11 @@ import timber.log.Timber
  * Contact: muhamed.gendy@gmail.com
  */
 
-class DetailsActivity : BaseActivity(), DetailView {
+class DetailsActivity : BaseActivity(), DetailContract.View {
 
   private val bus = EventBus.getDefault()
 
-  private var presenter: DetailPresenter? = null
+  private var presenter: Presenter? = null
   private var dialogUtil: DialogUtil? = null
   private var dialog: MaterialDialog? = null
   private var youtubeCode: String? = null
@@ -71,10 +74,10 @@ class DetailsActivity : BaseActivity(), DetailView {
     setContentView(R.layout.activity_details)
   }
 
-  override fun setupPresenter() {
-    presenter = DetailPresenterImpl(this)
-    presenter!!.onAttach()
+  override fun initPresenter() {
+    DetailPresenter().onAttach(this, DetailInteractorImpl())
   }
+
 
   override fun onStart() {
     super.onStart()
@@ -98,6 +101,10 @@ class DetailsActivity : BaseActivity(), DetailView {
     bus.removeStickyEvent(data)
   }
 
+  override fun setPresenter(presenter: DetailContract.Presenter) {
+    this.presenter = presenter
+  }
+
   override fun setActionBar() {
     setSupportActionBar(toolbar)
     val actionBar = supportActionBar
@@ -112,25 +119,25 @@ class DetailsActivity : BaseActivity(), DetailView {
     dialogUtil = DialogUtil(context!!)
   }
 
-  override fun loadImages(tubeUrl: String?, posterUrl: String?, backgroundUrl: String?) {
+  override fun loadImages(tubeUrl: String, posterUrl: String, backgroundUrl: String) {
     GlideUtil.loadYouTubeThumb(context!!, collapsing_toolbar!!, detail_iv_toolbar_trailer_thumb!!,
-        tubeUrl!!)
-    GlideUtil.loadPoster(context!!, detail_card_view!!, detail_iv_poster!!, posterUrl!!)
-    GlideUtil.loadImg(context!!, backgroundUrl!!, detail_iv_background!!)
+        tubeUrl)
+    GlideUtil.loadPoster(context!!, detail_card_view!!, detail_iv_poster!!, posterUrl)
+    GlideUtil.loadImg(context!!, backgroundUrl, detail_iv_background!!)
   }
 
-  override fun setInfo(year: String?, genre: String?, rate: String?, description: String?) {
+  override fun setInfo(year: String, genre: String, rate: String, description: String) {
     detail_tv_year!!.text = year
     detail_tv_genre!!.text = genre
-    detail_tv_rate!!.text = getString(R.string.vote, rate)
+    detail_tv_rate!!.text = getString(R.string.detail_vote, rate)
     detail_tv_overview!!.text = description
   }
 
-  override fun setPagerAdapter(adapter: ScreenshotsAdapter?) {
+  override fun setPagerAdapter(adapter: ScreenshotsAdapter) {
     detail_pager_screenshots!!.adapter = adapter
   }
 
-  override fun setCastRecyclerAdapter(adapter: CastAdapter?) {
+  override fun setCastRecyclerAdapter(adapter: CastAdapter) {
     detail_recycler_cast!!.adapter = adapter
   }
 
@@ -294,12 +301,22 @@ class DetailsActivity : BaseActivity(), DetailView {
 
   private fun setupInfoDialogButtons(builder: MaterialDialog.Builder, quality: Quality) {
     builder.positiveText(getString(R.string.dialog_download))
-    builder.onPositive { _, _ -> presenter!!.downloadFile(context!!, quality) }
+    builder.onPositive { _, _ -> requestPermission(quality) }
 
     builder.neutralText(getString(R.string.dialog_copy_magnet))
     builder.onNeutral { _, _ -> presenter!!.copyMagnet(builder.context, quality) }
 
     builder.negativeText(R.string.dialog_dismiss)
     builder.onNegative { dialog, _ -> dialog.dismiss() }
+  }
+
+  private fun requestPermission(quality: Quality) {
+    val rxPermissions = RxPermissions(context!!)
+    rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        .subscribe({ granted ->
+          presenter!!.onPermGranted(context!!, quality, granted!!)
+        }, {
+          Timber.e(it)
+        })
   }
 }

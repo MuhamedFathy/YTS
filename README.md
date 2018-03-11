@@ -14,12 +14,13 @@ This project is just a sample for learning, **DO NOT PUBLISH** it at PlayStore o
 ## Built With
 * Java
 * Kotlin
-* MVP ([Model View Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter))
+* MVP ([Model View Presenter](https://en.wikipedia.org/wiki/Model-view-presenter))
 
 ## Requirements
 * AndroidStudio version 3+
+* Gradle version 3.0.+
 * JDK 1.8
-* API 21 and above
+* API 21+
 
 ## Libraries
 * [RxJava](https://github.com/ReactiveX/RxJava)

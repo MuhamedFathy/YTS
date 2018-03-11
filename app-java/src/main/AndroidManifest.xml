@@ -33,7 +33,6 @@
         android:theme="@style/AppTheme.NoActionBar"/>
     <activity
         android:name=".ui.detail.DetailsActivity"
-        android:label="@string/title_activity_details"
         android:screenOrientation="portrait"
         android:theme="@style/TransparentBarTheme"/>
   </application>

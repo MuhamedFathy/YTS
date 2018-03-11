@@ -1,5 +1,6 @@
 package net.mEmoZz.yts.java.ui.detail;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -19,10 +20,10 @@ import android.widget.TextView;
 import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.pnikosis.materialishprogress.ProgressWheel;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import net.mEmoZz.yts.java.R;
 import net.mEmoZz.yts.java.data.Quality;
 import net.mEmoZz.yts.java.data.Urls;
@@ -36,6 +37,7 @@ import net.mEmoZz.yts.java.utilities.ToastUtil;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import timber.log.Timber;
 
 import static android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
 
@@ -44,7 +46,7 @@ import static android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
  * Contact: muhamed.gendy@gmail.com
  */
 
-public class DetailsActivity extends BaseActivity implements DetailView {
+public class DetailsActivity extends BaseActivity implements DetailContract.View {
 
   @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
   @BindView(R.id.toolbar) Toolbar toolbar;
@@ -85,7 +87,7 @@ public class DetailsActivity extends BaseActivity implements DetailView {
   @BindDrawable(R.drawable.ic_720p_quality) Drawable quality720pDrawable;
   @BindDrawable(R.drawable.ic_1080p_quality) Drawable quality1080pDrawable;
 
-  private DetailPresenter presenter;
+  private DetailContract.Presenter presenter;
   private EventBus bus = EventBus.getDefault();
   private DialogUtil dialogUtil;
   private MaterialDialog dialog;
@@ -94,12 +96,10 @@ public class DetailsActivity extends BaseActivity implements DetailView {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_details);
-    ButterKnife.bind(this);
   }
 
-  @Override protected void setupPresenter() {
-    presenter = new DetailPresenterImpl(this);
-    presenter.onAttach();
+  @Override protected void initPresenter() {
+    new DetailPresenter().onAttach(this, new DetailInteractorImpl());
   }
 
   @Override protected void onStart() {
@@ -122,6 +122,10 @@ public class DetailsActivity extends BaseActivity implements DetailView {
     setTitle(data.getMovieName());
     presenter.loadMovieDetails(getContext(), data.getMovieId());
     bus.removeStickyEvent(data);
+  }
+
+  @Override public void setPresenter(DetailContract.Presenter presenter) {
+    this.presenter = presenter;
   }
 
   @Override public void setActionBar() {
@@ -147,7 +151,7 @@ public class DetailsActivity extends BaseActivity implements DetailView {
   @Override public void setInfo(String year, String genre, String rate, String description) {
     yearTextView.setText(year);
     genreTextView.setText(genre);
-    rateTextView.setText(getString(R.string.vote, rate));
+    rateTextView.setText(getString(R.string.detail_vote, rate));
     overviewTextView.setText(description);
   }
 
@@ -311,12 +315,18 @@ public class DetailsActivity extends BaseActivity implements DetailView {
 
   private void setupInfoDialogButtons(MaterialDialog.Builder builder, Quality quality) {
     builder.positiveText(dialogDownload);
-    builder.onPositive((dialog, which) -> presenter.downloadFile(getContext(), quality));
+    builder.onPositive((dialog, which) -> requestPermission(quality));
 
     builder.neutralText(dialogCopyMagnet);
     builder.onNeutral((dialog, which) -> presenter.copyMagnet(builder.getContext(), quality));
 
     builder.negativeText(dialogDismiss);
     builder.onNegative((dialog, which) -> dialog.dismiss());
+  }
+
+  private void requestPermission(Quality quality) {
+    RxPermissions rxPermissions = new RxPermissions(getContext());
+    rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        .subscribe(granted -> presenter.onPermGranted(getContext(), quality, granted), Timber::e);
   }
 }

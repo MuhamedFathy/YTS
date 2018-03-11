@@ -40,13 +40,19 @@
             android:contentDescription="@null"
             android:scaleType="centerCrop"/>
 
-        <ImageButton
-            android:layout_width="52dp"
+        <Button
+            android:layout_width="wrap_content"
             android:layout_height="52dp"
             android:layout_gravity="center"
             android:background="@drawable/play_circle"
+            android:clickable="false"
             android:contentDescription="@null"
-            app:srcCompat="@drawable/ic_play_arrow"/>
+            android:drawablePadding="6dp"
+            android:drawableStart="@drawable/ic_play_arrow"
+            android:padding="12dp"
+            android:text="@string/detail_play_trailer"
+            android:textAllCaps="false"
+            android:textSize="16sp"/>
       </FrameLayout>
 
       <android.support.v7.widget.Toolbar

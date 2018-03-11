@@ -5,9 +5,9 @@ package net.mEmoZz.yts.kotlin.ui.base
  * Contact: muhamed.gendy@gmail.com
  */
 
-interface BasePresenter {
+interface BasePresenter<in V, in I : BaseInteractor> {
 
-  fun onAttach()
+  fun onAttach(view: V, interactor: I)
 
   fun onDestroy()
 }

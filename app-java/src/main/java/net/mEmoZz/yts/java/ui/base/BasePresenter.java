@@ -5,9 +5,9 @@ package net.mEmoZz.yts.java.ui.base;
  * Contact: muhamed.gendy@gmail.com
  */
 
-public interface BasePresenter {
+public interface BasePresenter<V extends BaseView, I extends BaseInteractor> {
 
-  void onAttach();
+  void onAttach(V view, I interactor);
 
   void onDestroy();
 }

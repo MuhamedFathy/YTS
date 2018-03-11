@@ -55,7 +55,7 @@ public class MovieDetail {
     @SerializedName("download_count") private int downloadCount;
     @SerializedName("genres") private List<String> genres;
     @SerializedName("runtime") private int runtime;
-    @SerializedName("rating") private float rating;
+    @SerializedName("rating") private String rating;
     @SerializedName("year") private String year;
     @SerializedName("slug") private String slug;
     @SerializedName("title_long") private String titleLong;
@@ -81,15 +81,15 @@ public class MovieDetail {
       return cast;
     }
 
-    public String getScreenshotImage3() {
+    public String getShot3() {
       return largeScreenshotImage3;
     }
 
-    public String getScreenshotImage2() {
+    public String getShot2() {
       return largeScreenshotImage2;
     }
 
-    public String getScreenshotImage1() {
+    public String getShot1() {
       return largeScreenshotImage1;
     }
 
@@ -133,7 +133,7 @@ public class MovieDetail {
       return runtime;
     }
 
-    public float getRating() {
+    public String getRating() {
       return rating;
     }
 

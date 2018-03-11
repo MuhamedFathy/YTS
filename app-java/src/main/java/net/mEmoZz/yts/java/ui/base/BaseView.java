@@ -5,7 +5,9 @@ package net.mEmoZz.yts.java.ui.base;
  * Contact: muhamed.gendy@gmail.com
  */
 
-public interface BaseView {
+public interface BaseView<T extends BasePresenter> {
+
+  void setPresenter(T presenter);
 
   void setActionBar();
 

@@ -3,7 +3,9 @@ package net.mEmoZz.yts.kotlin.ui.main
 import android.os.Bundle
 import android.support.annotation.DrawableRes
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.jakewharton.rxbinding2.support.v7.widget.RxRecyclerView
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.content_main.main_iv_event_holder
 import kotlinx.android.synthetic.main.content_main.main_linear_event_holder
@@ -15,6 +17,7 @@ import kotlinx.android.synthetic.main.content_main.main_tv_event_older
 import net.mEmoZz.yts.kotlin.R
 import net.mEmoZz.yts.kotlin.data.models.BaseMovie
 import net.mEmoZz.yts.kotlin.ui.base.BaseActivity
+import net.mEmoZz.yts.kotlin.ui.main.MainContract.Presenter
 import net.mEmoZz.yts.kotlin.ui.main.adapters.MoviesAdapter
 import java.util.ArrayList
 
@@ -23,12 +26,20 @@ import java.util.ArrayList
  * Contact: muhamed.gendy@gmail.com
  */
 
-class MainActivity : BaseActivity(), MainView {
+class MainActivity : BaseActivity(), MainContract.View {
 
-  private var presenter: MainPresenter? = null
+  private var presenter: Presenter? = null
   private var adapter: MoviesAdapter? = null
 
   private val moviesList = ArrayList<BaseMovie.Movie>()
+
+  private var previousTotal = 0
+  private val visibleThreshold = 5
+  private var firstVisibleItem: Int = 0
+  private var visibleItemCount: Int = 0
+  private var totalItemCount: Int = 0
+  private var currentPage = 1
+  private var loading = true
 
   companion object {
     private const val COLUMN_COUNT = 2
@@ -39,15 +50,17 @@ class MainActivity : BaseActivity(), MainView {
     setContentView(R.layout.activity_main)
   }
 
-  override fun setupPresenter() {
-    presenter = MainPresenterImpl(this)
-    presenter!!.onAttach()
-    presenter!!.loadMoviesList(this, 1, false)
+  override fun initPresenter() {
+    MainPresenter().onAttach(this, MainInteractorImpl())
   }
 
   override fun onDestroy() {
     presenter!!.onDestroy()
     super.onDestroy()
+  }
+
+  override fun setPresenter(presenter: MainContract.Presenter) {
+    this.presenter = presenter
   }
 
   override fun setActionBar() {
@@ -57,13 +70,38 @@ class MainActivity : BaseActivity(), MainView {
   override fun setupRecycler() {
     val manager = GridLayoutManager(context, COLUMN_COUNT)
     main_recycler_view_movies.layoutManager = manager
-    presenter!!.activateEndlessScroll(main_recycler_view_movies, manager)
+    activateEndlessScroll(main_recycler_view_movies, manager)
+  }
+
+  private fun activateEndlessScroll(recyclerView: RecyclerView, manager: GridLayoutManager) {
+    RxRecyclerView.scrollEvents(recyclerView)
+        .subscribe {
+          visibleItemCount = recyclerView.childCount
+          totalItemCount = manager.itemCount
+          firstVisibleItem = manager.findFirstVisibleItemPosition()
+          if (loading) {
+            if (totalItemCount > previousTotal) {
+              loading = false
+              previousTotal = totalItemCount
+            }
+          }
+          if (!loading && totalItemCount - visibleItemCount <= firstVisibleItem + visibleThreshold) {
+            currentPage++
+            presenter!!.loadMoviesList(context!!, currentPage, false)
+            loading = true
+          }
+        }
   }
 
   override fun setupRefreshLayout() {
     main_refresh_layout.setOnRefreshListener {
+      previousTotal = 0
       presenter!!.loadMoviesList(this, 1, true)
     }
+  }
+
+  override fun loadList() {
+    presenter!!.loadMoviesList(context!!, 1, false)
   }
 
   override fun setRecyclerAdapter(moviesList: List<BaseMovie.Movie>, refresh: Boolean) {
@@ -78,10 +116,6 @@ class MainActivity : BaseActivity(), MainView {
     } else {
       adapter!!.notifyItemRangeInserted(adapter!!.itemCount, this.moviesList.size - 1)
     }
-  }
-
-  override fun onLoadMore(currentPage: Int) {
-    presenter!!.loadMoviesList(this, currentPage, false)
   }
 
   override fun enableRefreshLayout() {

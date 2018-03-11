@@ -23,7 +23,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
   override fun setContentView(layoutResID: Int) {
     super.setContentView(layoutResID)
-    setupPresenter()
+    initPresenter()
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -37,5 +37,5 @@ abstract class BaseActivity : AppCompatActivity() {
     super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
   }
 
-  protected abstract fun setupPresenter()
+  protected abstract fun initPresenter()
 }

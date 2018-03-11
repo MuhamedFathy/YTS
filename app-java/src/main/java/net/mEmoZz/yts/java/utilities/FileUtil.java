@@ -3,7 +3,6 @@ package net.mEmoZz.yts.java.utilities;
 import android.os.Environment;
 import io.reactivex.Observable;
 import java.io.File;
-import java.io.IOException;
 import okhttp3.ResponseBody;
 import okio.BufferedSink;
 import okio.Okio;
@@ -14,9 +13,9 @@ import retrofit2.Response;
  * Contact: muhamed.gendy@gmail.com
  */
 
-public class FileUtil {
+@SuppressWarnings("ConstantConditions") public class FileUtil {
 
-  public static Observable<File> writeResponseToDisk(Response<ResponseBody> response) {
+  public static Observable<Boolean> writeResponseToDisk(Response<ResponseBody> response) {
     return Observable.create(emitter -> {
       try {
         String header = response.headers().get("Content-Disposition");
@@ -27,10 +26,9 @@ public class FileUtil {
         BufferedSink sink = Okio.buffer(Okio.sink(file));
         sink.writeAll(response.body().source());
         sink.close();
-        emitter.onNext(file);
+        emitter.onNext(file.exists());
         emitter.onComplete();
-      } catch (IOException e) {
-        e.printStackTrace();
+      } catch (Exception e) {
         emitter.onError(e);
       }
     });

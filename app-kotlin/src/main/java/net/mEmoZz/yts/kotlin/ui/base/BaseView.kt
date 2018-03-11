@@ -5,7 +5,9 @@ package net.mEmoZz.yts.kotlin.ui.base
  * Contact: muhamed.gendy@gmail.com
  */
 
-interface BaseView {
+interface BaseView<in T : BasePresenter<*, *>> {
+
+  fun setPresenter(presenter: T)
 
   fun setActionBar()
 

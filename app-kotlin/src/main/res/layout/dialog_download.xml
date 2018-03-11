@@ -28,7 +28,7 @@
       android:layout_marginStart="8dp"
       android:layout_marginTop="8dp"
       android:gravity="center"
-      android:text="@string/file_size"
+      android:text="@string/detail_file_size"
       android:textSize="16sp"
       app:layout_constraintEnd_toEndOf="@+id/dialog_download_iv_quality"
       app:layout_constraintStart_toStartOf="@+id/dialog_download_iv_quality"

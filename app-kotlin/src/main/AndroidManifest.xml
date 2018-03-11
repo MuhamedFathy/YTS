@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="net.mEmoZz.yts.kotlin">
@@ -12,10 +13,10 @@
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
       android:resizeableActivity="false"
-      android:supportsRtl="true"
+      android:roundIcon="@mipmap/ic_launcher"
+      android:supportsRtl="false"
       android:theme="@style/AppTheme"
       tools:ignore="AllowBackup,GoogleAppIndexingWarning,UnusedAttribute">
-
     <activity
         android:name=".ui.splash.SplashActivity"
         android:screenOrientation="portrait"
@@ -32,8 +33,8 @@
         android:theme="@style/AppTheme.NoActionBar"/>
     <activity
         android:name=".ui.detail.DetailsActivity"
-        android:label="@string/title_activity_details"
         android:screenOrientation="portrait"
         android:theme="@style/TransparentBarTheme"/>
   </application>
+
 </manifest>

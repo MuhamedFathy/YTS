@@ -27,7 +27,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
   @Override public void setContentView(int layoutResID) {
     super.setContentView(layoutResID);
     ButterKnife.bind(this);
-    setupPresenter();
+    initPresenter();
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -47,5 +47,5 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
     return context;
   }
 
-  protected abstract void setupPresenter();
+  protected abstract void initPresenter();
 }

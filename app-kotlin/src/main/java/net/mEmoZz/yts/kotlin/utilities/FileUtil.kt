@@ -6,7 +6,6 @@ import okhttp3.ResponseBody
 import okio.Okio
 import retrofit2.Response
 import java.io.File
-import java.io.IOException
 
 /**
  * Authored by Mohamed Fathy on 08 Mar, 2018.
@@ -15,7 +14,7 @@ import java.io.IOException
 
 object FileUtil {
 
-  fun writeResponseToDisk(response: Response<ResponseBody>): Observable<File> {
+  fun writeResponseToDisk(response: Response<ResponseBody>): Observable<Boolean> {
     return Observable.create { emitter ->
       try {
         val header = response.headers().get("Content-Disposition")
@@ -26,10 +25,9 @@ object FileUtil {
         val sink = Okio.buffer(Okio.sink(file))
         sink.writeAll(response.body()!!.source())
         sink.close()
-        emitter.onNext(file)
+        emitter.onNext(file.exists())
         emitter.onComplete()
-      } catch (e: IOException) {
-        e.printStackTrace()
+      } catch (e: Exception) {
         emitter.onError(e)
       }
     }

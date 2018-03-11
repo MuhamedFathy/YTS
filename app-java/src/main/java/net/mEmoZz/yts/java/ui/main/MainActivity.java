@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindString;
 import butterknife.BindView;
+import com.jakewharton.rxbinding2.support.v7.widget.RxRecyclerView;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import net.mEmoZz.yts.java.ui.widgets.SwipeRefreshView;
  * Contact: muhamed.gendy@gmail.com
  */
 
-public class MainActivity extends BaseActivity implements MainView {
+public class MainActivity extends BaseActivity implements MainContract.View {
 
   @BindView(R.id.toolbar) Toolbar toolbar;
   @BindView(R.id.main_refresh_layout) SwipeRefreshView mainRefreshLayout;
@@ -42,24 +43,32 @@ public class MainActivity extends BaseActivity implements MainView {
 
   private static final int COLUMN_COUNT = 2;
 
-  private MainPresenter presenter;
+  private MainContract.Presenter presenter;
   private MoviesAdapter adapter;
   private List<BaseMovie.Movie> moviesList = new ArrayList<>();
+
+  private int previousTotal = 0;
+  private int visibleThreshold = 5;
+  private int firstVisibleItem, visibleItemCount, totalItemCount;
+  private int currentPage = 1;
+  private boolean loading = true;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
   }
 
-  @Override protected void setupPresenter() {
-    presenter = new MainPresenterImpl(this);
-    presenter.onAttach();
-    presenter.loadMoviesList(getContext(), 1, false);
+  @Override protected void initPresenter() {
+    new MainPresenter().onAttach(this, new MainInteractorImpl());
   }
 
   @Override protected void onDestroy() {
     presenter.onDestroy();
     super.onDestroy();
+  }
+
+  @Override public void setPresenter(MainContract.Presenter presenter) {
+    this.presenter = presenter;
   }
 
   @Override public void setActionBar() {
@@ -69,11 +78,39 @@ public class MainActivity extends BaseActivity implements MainView {
   @Override public void setupRecycler() {
     GridLayoutManager manager = new GridLayoutManager(getContext(), COLUMN_COUNT);
     moviesRecyclerList.setLayoutManager(manager);
-    presenter.activateEndlessScroll(moviesRecyclerList, manager);
+    activateEndlessScroll(moviesRecyclerList, manager);
+  }
+
+  private void activateEndlessScroll(RecyclerView recyclerView, GridLayoutManager manager) {
+    RxRecyclerView.scrollEvents(recyclerView)
+        .subscribe(scrollEvent -> {
+          visibleItemCount = recyclerView.getChildCount();
+          totalItemCount = manager.getItemCount();
+          firstVisibleItem = manager.findFirstVisibleItemPosition();
+          if (loading) {
+            if (totalItemCount > previousTotal) {
+              loading = false;
+              previousTotal = totalItemCount;
+            }
+          }
+          if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem
+              + visibleThreshold)) {
+            currentPage++;
+            presenter.loadMoviesList(getContext(), currentPage, false);
+            loading = true;
+          }
+        });
   }
 
   @Override public void setupRefreshLayout() {
-    mainRefreshLayout.setOnRefreshListener(() -> presenter.loadMoviesList(getContext(), 1, true));
+    mainRefreshLayout.setOnRefreshListener(() -> {
+      previousTotal = 0;
+      presenter.loadMoviesList(getContext(), 1, true);
+    });
+  }
+
+  @Override public void loadList() {
+    presenter.loadMoviesList(getContext(), 1, false);
   }
 
   @Override public void setRecyclerAdapter(List<BaseMovie.Movie> moviesList, boolean refresh) {
@@ -88,10 +125,6 @@ public class MainActivity extends BaseActivity implements MainView {
     } else {
       adapter.notifyItemRangeInserted(adapter.getItemCount(), this.moviesList.size() - 1);
     }
-  }
-
-  @Override public void onLoadMore(int currentPage) {
-    presenter.loadMoviesList(getContext(), currentPage, false);
   }
 
   @Override public void enableRefreshLayout() {

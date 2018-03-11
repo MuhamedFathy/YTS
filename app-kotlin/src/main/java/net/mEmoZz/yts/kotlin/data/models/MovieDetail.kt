@@ -24,9 +24,9 @@ class MovieDetail {
     @SerializedName("date_uploaded") val dateUploaded: String? = null
     @SerializedName("torrents") val torrents: List<Torrent>? = null
     @SerializedName("cast") val cast: List<Cast>? = null
-    @SerializedName("large_screenshot_image3") val screenshotImage3: String? = null
-    @SerializedName("large_screenshot_image2") val screenshotImage2: String? = null
-    @SerializedName("large_screenshot_image1") val screenshotImage1: String? = null
+    @SerializedName("large_screenshot_image3") val shot3: String? = null
+    @SerializedName("large_screenshot_image2") val shot2: String? = null
+    @SerializedName("large_screenshot_image1") val shot1: String? = null
     @SerializedName("large_cover_image") val poster: String? = null
     @SerializedName("background_image_original") val backgroundImage: String? = null
     @SerializedName("mpa_rating") val mpaRating: String? = null

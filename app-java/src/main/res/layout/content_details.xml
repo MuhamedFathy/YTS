@@ -19,6 +19,7 @@
         android:id="@+id/detail_constraint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/transGrey2"
         android:visibility="invisible">
 
       <FrameLayout
@@ -84,7 +85,7 @@
               android:paddingEnd="18dp"
               android:paddingStart="18dp"
               android:paddingTop="8dp"
-              android:text="@string/res_3d"
+              android:text="@string/detail_res_3d"
               android:textColor="@color/grey2"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintTop_toBottomOf="@+id/detail_card_view"/>
@@ -101,7 +102,7 @@
               android:foreground="?selectableItemBackground"
               android:gravity="center"
               android:padding="8dp"
-              android:text="@string/res_720p"
+              android:text="@string/detail_res_720p"
               android:textColor="@color/grey2"
               app:layout_constraintStart_toEndOf="@+id/detail_tv_res_3d"
               app:layout_constraintTop_toTopOf="@+id/detail_tv_res_3d"/>
@@ -119,7 +120,7 @@
               android:foreground="?selectableItemBackground"
               android:gravity="center"
               android:padding="8dp"
-              android:text="@string/res_1080p"
+              android:text="@string/detail_res_1080p"
               android:textColor="@color/grey2"
               app:layout_constraintStart_toEndOf="@+id/detail_tv_res_720"
               app:layout_constraintTop_toTopOf="@+id/detail_tv_res_720"/>
