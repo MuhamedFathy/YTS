@@ -20,7 +20,7 @@ This project is just a sample for learning, **DO NOT PUBLISH** it at PlayStore o
 * AndroidStudio version 3+
 * Gradle version 3.0.+
 * JDK 1.8
-* API 21+
+* API 21 and above
 
 ## Libraries
 * [RxJava](https://github.com/ReactiveX/RxJava)
