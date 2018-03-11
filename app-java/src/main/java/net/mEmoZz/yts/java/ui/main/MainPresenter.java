@@ -1,8 +1,6 @@
 package net.mEmoZz.yts.java.ui.main;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import java.util.List;
@@ -89,11 +87,6 @@ class MainPresenter implements MainContract.Presenter, MainInteractor.MainListen
     view.hideRecycler();
     view.hideRefreshLayout();
     view.showNoConnectionView();
-  }
-
-  @Override
-  public void activateEndlessScroll(RecyclerView recyclerView, GridLayoutManager manager) {
-
   }
 
   private void showLoader(boolean progressBar) {

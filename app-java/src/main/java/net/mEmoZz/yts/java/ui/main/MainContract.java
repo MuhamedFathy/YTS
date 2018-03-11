@@ -1,8 +1,6 @@
 package net.mEmoZz.yts.java.ui.main;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import java.util.List;
 import net.mEmoZz.yts.java.data.models.BaseMovie;
 import net.mEmoZz.yts.java.ui.base.BasePresenter;
@@ -51,7 +49,5 @@ public interface MainContract {
   interface Presenter extends BasePresenter<View, MainInteractor> {
 
     void loadMoviesList(Context context, int pageNum, boolean refresh);
-
-    void activateEndlessScroll(RecyclerView recyclerView, GridLayoutManager manager);
   }
 }

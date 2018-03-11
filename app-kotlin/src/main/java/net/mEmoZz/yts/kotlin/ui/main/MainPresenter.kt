@@ -1,8 +1,6 @@
 package net.mEmoZz.yts.kotlin.ui.main
 
 import android.content.Context
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import net.mEmoZz.yts.kotlin.data.models.BaseMovie
@@ -88,10 +86,6 @@ internal class MainPresenter : MainContract.Presenter, MainInteractor.MainListen
     view!!.hideRecycler()
     view!!.hideRefreshLayout()
     view!!.showNoConnectionView()
-  }
-
-  override fun activateEndlessScroll(recyclerView: RecyclerView, manager: GridLayoutManager) {
-
   }
 
   private fun showLoader(progressBar: Boolean) {
