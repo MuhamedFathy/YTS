@@ -39,9 +39,12 @@ This project is just a sample for learning, **DO NOT PUBLISH** it at PlayStore o
 * [EventBus](https://github.com/greenrobot/EventBus)
 * [Calligraphy](https://github.com/chrisjenx/Calligraphy)
 
+## Code style
+I used [Square Java code style](https://github.com/square/java-code-styles).
+
 ## Inspiration
 * [Android-Architecture](https://github.com/googlesamples/android-architecture)
 * [AndroidMVP](https://github.com/antoniolg/androidmvp)
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/MuhamedFathy/YTS/blob/master/LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/MuhamedFathy/YTS/blob/master/LICENSE) file for details.
