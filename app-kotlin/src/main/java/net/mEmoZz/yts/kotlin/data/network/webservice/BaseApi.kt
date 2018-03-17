@@ -1,9 +1,9 @@
-package net.mEmoZz.yts.kotlin.data.webservice
+package net.mEmoZz.yts.kotlin.data.network.webservice
 
 import io.reactivex.Observable
-import net.mEmoZz.yts.kotlin.data.Urls.ENDPOINTS
-import net.mEmoZz.yts.kotlin.data.models.BaseMovie
-import net.mEmoZz.yts.kotlin.data.models.MovieDetail
+import net.mEmoZz.yts.kotlin.data.network.Urls.ENDPOINTS
+import net.mEmoZz.yts.kotlin.data.network.models.BaseMovie
+import net.mEmoZz.yts.kotlin.data.network.models.MovieDetail
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.GET

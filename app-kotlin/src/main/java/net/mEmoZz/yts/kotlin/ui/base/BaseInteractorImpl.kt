@@ -1,6 +1,6 @@
 package net.mEmoZz.yts.kotlin.ui.base
 
-import net.mEmoZz.yts.kotlin.data.connection.RetroConnect
+import net.mEmoZz.yts.kotlin.data.network.connection.RetroConnect
 
 /**
  * Authored by Mohamed Fathy on 11 Mar, 2018.

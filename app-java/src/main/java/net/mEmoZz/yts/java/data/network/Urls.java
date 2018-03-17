@@ -1,4 +1,6 @@
-package net.mEmoZz.yts.java.data;
+package net.mEmoZz.yts.java.data.network;
+
+import net.mEmoZz.yts.java.data.Quality;
 
 /**
  * Authored by Mohamed Fathy on 08 Mar, 2018.

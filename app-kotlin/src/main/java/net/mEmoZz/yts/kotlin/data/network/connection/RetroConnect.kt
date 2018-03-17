@@ -1,8 +1,8 @@
-package net.mEmoZz.yts.kotlin.data.connection
+package net.mEmoZz.yts.kotlin.data.network.connection
 
 import net.mEmoZz.yts.kotlin.BuildConfig
-import net.mEmoZz.yts.kotlin.data.Urls
-import net.mEmoZz.yts.kotlin.data.webservice.BaseApi
+import net.mEmoZz.yts.kotlin.data.network.Urls
+import net.mEmoZz.yts.kotlin.data.network.webservice.BaseApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level

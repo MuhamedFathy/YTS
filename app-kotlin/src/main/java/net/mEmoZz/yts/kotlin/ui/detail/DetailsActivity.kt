@@ -41,8 +41,8 @@ import net.mEmoZz.yts.kotlin.data.Quality
 import net.mEmoZz.yts.kotlin.data.Quality.Q_1080P
 import net.mEmoZz.yts.kotlin.data.Quality.Q_3D
 import net.mEmoZz.yts.kotlin.data.Quality.Q_720P
-import net.mEmoZz.yts.kotlin.data.Urls
 import net.mEmoZz.yts.kotlin.data.bus.MovieData
+import net.mEmoZz.yts.kotlin.data.network.Urls
 import net.mEmoZz.yts.kotlin.ui.base.BaseActivity
 import net.mEmoZz.yts.kotlin.ui.detail.DetailContract.Presenter
 import net.mEmoZz.yts.kotlin.ui.detail.adapters.pager.ScreenshotsAdapter

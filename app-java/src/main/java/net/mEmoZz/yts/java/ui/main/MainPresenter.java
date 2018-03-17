@@ -4,7 +4,7 @@ import android.content.Context;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import java.util.List;
-import net.mEmoZz.yts.java.data.models.BaseMovie;
+import net.mEmoZz.yts.java.data.network.models.BaseMovie;
 import net.mEmoZz.yts.java.utilities.Utils;
 import timber.log.Timber;
 

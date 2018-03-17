@@ -1,4 +1,6 @@
-package net.mEmoZz.yts.kotlin.data
+package net.mEmoZz.yts.kotlin.data.network
+
+import net.mEmoZz.yts.kotlin.data.Quality
 
 /**
  * Authored by Mohamed Fathy on 08 Mar, 2018.

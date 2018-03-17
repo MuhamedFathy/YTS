@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -76,6 +75,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:gravity="center"/>
+
+        <View
+            android:id="@+id/item_view_shared"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
       </FrameLayout>
     </RelativeLayout>
   </android.support.constraint.ConstraintLayout>

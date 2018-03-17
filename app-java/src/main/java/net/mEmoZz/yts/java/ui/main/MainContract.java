@@ -2,7 +2,7 @@ package net.mEmoZz.yts.java.ui.main;
 
 import android.content.Context;
 import java.util.List;
-import net.mEmoZz.yts.java.data.models.BaseMovie;
+import net.mEmoZz.yts.java.data.network.models.BaseMovie;
 import net.mEmoZz.yts.java.ui.base.BasePresenter;
 import net.mEmoZz.yts.java.ui.base.BaseView;
 

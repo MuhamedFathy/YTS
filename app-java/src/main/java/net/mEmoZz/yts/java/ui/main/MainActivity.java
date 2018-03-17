@@ -13,10 +13,9 @@ import butterknife.BindString;
 import butterknife.BindView;
 import com.jakewharton.rxbinding2.support.v7.widget.RxRecyclerView;
 import com.pnikosis.materialishprogress.ProgressWheel;
-import java.util.ArrayList;
 import java.util.List;
 import net.mEmoZz.yts.java.R;
-import net.mEmoZz.yts.java.data.models.BaseMovie;
+import net.mEmoZz.yts.java.data.network.models.BaseMovie;
 import net.mEmoZz.yts.java.ui.base.BaseActivity;
 import net.mEmoZz.yts.java.ui.main.adapters.MoviesAdapter;
 import net.mEmoZz.yts.java.ui.widgets.SwipeRefreshView;
@@ -45,12 +44,11 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
   private MainContract.Presenter presenter;
   private MoviesAdapter adapter;
-  private List<BaseMovie.Movie> moviesList = new ArrayList<>();
 
   private int previousTotal = 0;
   private int visibleThreshold = 5;
   private int firstVisibleItem, visibleItemCount, totalItemCount;
-  private int currentPage = 1;
+  private int pageNum = 1;
   private boolean loading = true;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -93,10 +91,10 @@ public class MainActivity extends BaseActivity implements MainContract.View {
               previousTotal = totalItemCount;
             }
           }
-          if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem
-              + visibleThreshold)) {
-            currentPage++;
-            presenter.loadMoviesList(getContext(), currentPage, false);
+          if (!loading && (totalItemCount - visibleItemCount)
+              <= (firstVisibleItem + visibleThreshold)) {
+            pageNum++;
+            presenter.loadMoviesList(getContext(), pageNum, false);
             loading = true;
           }
         });
@@ -105,25 +103,21 @@ public class MainActivity extends BaseActivity implements MainContract.View {
   @Override public void setupRefreshLayout() {
     mainRefreshLayout.setOnRefreshListener(() -> {
       previousTotal = 0;
-      presenter.loadMoviesList(getContext(), 1, true);
+      pageNum = 1;
+      presenter.loadMoviesList(getContext(), pageNum, true);
     });
   }
 
   @Override public void loadList() {
-    presenter.loadMoviesList(getContext(), 1, false);
+    presenter.loadMoviesList(getContext(), pageNum, false);
   }
 
   @Override public void setRecyclerAdapter(List<BaseMovie.Movie> moviesList, boolean refresh) {
-    if (refresh) {
-      this.moviesList.clear();
-      adapter = null;
-    }
-    this.moviesList.addAll(moviesList);
     if (adapter == null) {
-      adapter = new MoviesAdapter(getContext(), this.moviesList);
+      adapter = new MoviesAdapter(getContext(), moviesList);
       moviesRecyclerList.setAdapter(adapter);
     } else {
-      adapter.notifyItemRangeInserted(adapter.getItemCount(), this.moviesList.size() - 1);
+      adapter.updateData(moviesList, refresh);
     }
   }
 

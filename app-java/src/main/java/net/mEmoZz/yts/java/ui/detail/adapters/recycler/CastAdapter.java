@@ -11,7 +11,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import java.util.List;
 import net.mEmoZz.yts.java.R;
-import net.mEmoZz.yts.java.data.models.MovieDetail;
+import net.mEmoZz.yts.java.data.network.models.MovieDetail;
 import net.mEmoZz.yts.java.utilities.GlideUtil;
 import net.mEmoZz.yts.java.utilities.Utils;
 
@@ -50,7 +50,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastHolder> {
     return casts.size();
   }
 
-  public class CastHolder extends RecyclerView.ViewHolder {
+  class CastHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.item_cast_iv_pic) CircleImageView castImageView;
     @BindView(R.id.item_cast_tv_name) TextView castTextView;

@@ -6,8 +6,8 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import net.mEmoZz.yts.kotlin.data.Quality
-import net.mEmoZz.yts.kotlin.data.Urls
-import net.mEmoZz.yts.kotlin.data.models.MovieDetail
+import net.mEmoZz.yts.kotlin.data.network.Urls
+import net.mEmoZz.yts.kotlin.data.network.models.MovieDetail
 import net.mEmoZz.yts.kotlin.ui.detail.adapters.pager.ScreenshotsAdapter
 import net.mEmoZz.yts.kotlin.ui.detail.adapters.recycler.CastAdapter
 import net.mEmoZz.yts.kotlin.utilities.FileUtil
@@ -87,7 +87,11 @@ class DetailPresenter : DetailContract.Presenter, DetailInteractor.DetailListene
 
   override fun subscribeDetail(context: Activity, model: MovieDetail) {
     movie = model.data!!.movie
-    val youtubeUrl = Urls.getYouTubeImgUrl(movie!!.youtubeCode)
+    val youtubeUrl = if (movie!!.shot1 != null) {
+      movie!!.shot1!!
+    } else {
+      Urls.getYouTubeImgUrl(movie!!.youtubeCode)
+    }
     view!!.loadImages(youtubeUrl, movie!!.poster!!, movie!!.backgroundImage!!)
     torrents = movie!!.torrents
     setupQuality()

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.item_cast.view.item_cast_iv_pic
 import kotlinx.android.synthetic.main.item_cast.view.item_cast_tv_name
 import net.mEmoZz.yts.kotlin.R
-import net.mEmoZz.yts.kotlin.data.models.MovieDetail
+import net.mEmoZz.yts.kotlin.data.network.models.MovieDetail
 import net.mEmoZz.yts.kotlin.utilities.GlideUtil
 import net.mEmoZz.yts.kotlin.utilities.Utils
 

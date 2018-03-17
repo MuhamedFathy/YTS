@@ -3,7 +3,7 @@ package net.mEmoZz.yts.kotlin.ui.detail
 import android.app.Activity
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
-import net.mEmoZz.yts.kotlin.data.models.MovieDetail
+import net.mEmoZz.yts.kotlin.data.network.models.MovieDetail
 import net.mEmoZz.yts.kotlin.ui.base.BaseInteractor
 import okhttp3.ResponseBody
 import retrofit2.Response

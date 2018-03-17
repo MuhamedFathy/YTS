@@ -15,11 +15,10 @@ import kotlinx.android.synthetic.main.content_main.main_recycler_view_movies
 import kotlinx.android.synthetic.main.content_main.main_refresh_layout
 import kotlinx.android.synthetic.main.content_main.main_tv_event_older
 import net.mEmoZz.yts.kotlin.R
-import net.mEmoZz.yts.kotlin.data.models.BaseMovie
+import net.mEmoZz.yts.kotlin.data.network.models.BaseMovie
 import net.mEmoZz.yts.kotlin.ui.base.BaseActivity
 import net.mEmoZz.yts.kotlin.ui.main.MainContract.Presenter
 import net.mEmoZz.yts.kotlin.ui.main.adapters.MoviesAdapter
-import java.util.ArrayList
 
 /**
  * Authored by Mohamed Fathy on 08 Mar, 2018.
@@ -31,14 +30,12 @@ class MainActivity : BaseActivity(), MainContract.View {
   private var presenter: Presenter? = null
   private var adapter: MoviesAdapter? = null
 
-  private val moviesList = ArrayList<BaseMovie.Movie>()
-
   private var previousTotal = 0
   private val visibleThreshold = 5
-  private var firstVisibleItem: Int = 0
-  private var visibleItemCount: Int = 0
-  private var totalItemCount: Int = 0
-  private var currentPage = 1
+  private var firstVisibleItem = 0
+  private var visibleItemCount = 0
+  private var totalItemCount = 0
+  private var pageNum = 1
   private var loading = true
 
   companion object {
@@ -86,8 +83,8 @@ class MainActivity : BaseActivity(), MainContract.View {
             }
           }
           if (!loading && totalItemCount - visibleItemCount <= firstVisibleItem + visibleThreshold) {
-            currentPage++
-            presenter!!.loadMoviesList(context!!, currentPage, false)
+            pageNum++
+            presenter!!.loadMoviesList(context!!, pageNum, false)
             loading = true
           }
         }
@@ -96,25 +93,21 @@ class MainActivity : BaseActivity(), MainContract.View {
   override fun setupRefreshLayout() {
     main_refresh_layout.setOnRefreshListener {
       previousTotal = 0
-      presenter!!.loadMoviesList(this, 1, true)
+      pageNum = 1
+      presenter!!.loadMoviesList(context!!, pageNum, true)
     }
   }
 
   override fun loadList() {
-    presenter!!.loadMoviesList(context!!, 1, false)
+    presenter!!.loadMoviesList(context!!, pageNum, false)
   }
 
   override fun setRecyclerAdapter(moviesList: List<BaseMovie.Movie>, refresh: Boolean) {
-    if (refresh) {
-      this.moviesList.clear()
-      adapter = null
-    }
-    this.moviesList.addAll(moviesList)
     if (adapter == null) {
-      adapter = MoviesAdapter(context!!, this.moviesList)
+      adapter = MoviesAdapter(context!!, moviesList.toMutableList())
       main_recycler_view_movies!!.adapter = adapter
     } else {
-      adapter!!.notifyItemRangeInserted(adapter!!.itemCount, this.moviesList.size - 1)
+      adapter!!.updateData(moviesList, refresh)
     }
   }
 

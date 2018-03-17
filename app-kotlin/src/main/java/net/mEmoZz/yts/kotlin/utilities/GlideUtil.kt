@@ -14,12 +14,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.github.florent37.glidepalette.BitmapPalette.Profile
 import com.github.florent37.glidepalette.BitmapPalette.Swatch
 import com.github.florent37.glidepalette.GlidePalette
-import kotlinx.android.synthetic.main.item_movies_list.view.itemCard
-import kotlinx.android.synthetic.main.item_movies_list.view.itemIVPoster
-import kotlinx.android.synthetic.main.item_movies_list.view.itemRelativeTintAble
-import kotlinx.android.synthetic.main.item_movies_list.view.itemTVMovieGenre
-import kotlinx.android.synthetic.main.item_movies_list.view.itemTVMovieName
-import kotlinx.android.synthetic.main.item_movies_list.view.itemTVMovieYear
+import kotlinx.android.synthetic.main.item_movies_list.view.item_card
+import kotlinx.android.synthetic.main.item_movies_list.view.item_iv_poster
+import kotlinx.android.synthetic.main.item_movies_list.view.item_relative_tintable
+import kotlinx.android.synthetic.main.item_movies_list.view.item_tv_movie_genre
+import kotlinx.android.synthetic.main.item_movies_list.view.item_tv_movie_name
+import kotlinx.android.synthetic.main.item_movies_list.view.item_tv_movie_year
 import net.mEmoZz.yts.kotlin.ui.main.adapters.MoviesAdapter
 import net.mEmoZz.yts.kotlin.utilities.GlideUtil.Type.ITEM
 import net.mEmoZz.yts.kotlin.utilities.GlideUtil.Type.POSTER
@@ -46,7 +46,7 @@ object GlideUtil {
         .listener(getPalette(ITEM, holder, null, null, url))
         .transition(DrawableTransitionOptions.withCrossFade())
         .apply(RequestOptions.centerCropTransform())
-        .into(holder.itemView.itemIVPoster)
+        .into(holder.itemView.item_iv_poster)
   }
 
   fun loadYouTubeThumb(
@@ -76,10 +76,10 @@ object GlideUtil {
   ): RequestListener<Drawable>? {
     val glidePalette = GlidePalette.with(url).use(Profile.VIBRANT)
     if (holder != null) {
-      glidePalette.intoBackground(holder.itemView.itemRelativeTintAble, Swatch.RGB)
-          .intoTextColor(holder.itemView.itemTVMovieName, Swatch.BODY_TEXT_COLOR)
-          .intoTextColor(holder.itemView.itemTVMovieYear, Swatch.BODY_TEXT_COLOR)
-          .intoTextColor(holder.itemView.itemTVMovieGenre, Swatch.BODY_TEXT_COLOR)
+      glidePalette.intoBackground(holder.itemView.item_relative_tintable, Swatch.RGB)
+          .intoTextColor(holder.itemView.item_tv_movie_name, Swatch.BODY_TEXT_COLOR)
+          .intoTextColor(holder.itemView.item_tv_movie_year, Swatch.BODY_TEXT_COLOR)
+          .intoTextColor(holder.itemView.item_tv_movie_genre, Swatch.BODY_TEXT_COLOR)
     }
     glidePalette.crossfade(true)
         .intoCallBack { palette ->
@@ -89,9 +89,9 @@ object GlideUtil {
             if (vibrantSwatch != null) {
               when (type) {
                 ITEM -> if (holder != null) {
-                  holder.itemView.itemCard.setCardBackgroundColor(vibrantSwatch.rgb)
+                  holder.itemView.item_card.setCardBackgroundColor(vibrantSwatch.rgb)
                   if (vibrantSwatch.rgb == Color.TRANSPARENT && mutedSwatch != null) {
-                    holder.itemView.itemCard.setCardBackgroundColor(mutedSwatch.rgb)
+                    holder.itemView.item_card.setCardBackgroundColor(mutedSwatch.rgb)
                   }
                 }
                 YOUTUBE -> {

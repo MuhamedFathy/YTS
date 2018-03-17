@@ -3,7 +3,7 @@ package net.mEmoZz.yts.kotlin.ui.main
 import android.content.Context
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import net.mEmoZz.yts.kotlin.data.models.BaseMovie
+import net.mEmoZz.yts.kotlin.data.network.models.BaseMovie
 import net.mEmoZz.yts.kotlin.utilities.Utils
 import timber.log.Timber
 

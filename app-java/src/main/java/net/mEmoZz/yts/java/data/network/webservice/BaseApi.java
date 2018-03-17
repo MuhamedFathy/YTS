@@ -1,9 +1,9 @@
-package net.mEmoZz.yts.java.data.webservice;
+package net.mEmoZz.yts.java.data.network.webservice;
 
 import io.reactivex.Observable;
-import net.mEmoZz.yts.java.data.Urls.ENDPOINTS;
-import net.mEmoZz.yts.java.data.models.BaseMovie;
-import net.mEmoZz.yts.java.data.models.MovieDetail;
+import net.mEmoZz.yts.java.data.network.Urls.ENDPOINTS;
+import net.mEmoZz.yts.java.data.network.models.BaseMovie;
+import net.mEmoZz.yts.java.data.network.models.MovieDetail;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.GET;
@@ -15,7 +15,7 @@ import retrofit2.http.Url;
  * Contact: muhamed.gendy@gmail.com
  */
 
-public interface BaseApi {
+@SuppressWarnings("SameParameterValue") public interface BaseApi {
 
   @GET(ENDPOINTS.MOVIES_LIST) Observable<BaseMovie> getMoviesList(
       @Query("page") int pageNum

@@ -1,6 +1,7 @@
 package net.mEmoZz.yts.java.ui.main.adapters;
 
 import android.app.Activity;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,8 +17,9 @@ import butterknife.OnClick;
 import java.util.List;
 import net.mEmoZz.yts.java.R;
 import net.mEmoZz.yts.java.data.bus.MovieData;
-import net.mEmoZz.yts.java.data.models.BaseMovie;
+import net.mEmoZz.yts.java.data.network.models.BaseMovie;
 import net.mEmoZz.yts.java.ui.detail.DetailsActivity;
+import net.mEmoZz.yts.java.ui.main.adapters.callback.MoviesDiffCallback;
 import net.mEmoZz.yts.java.utilities.GlideUtil;
 import net.mEmoZz.yts.java.utilities.ToastUtil;
 import net.mEmoZz.yts.java.utilities.Utils;
@@ -31,11 +33,11 @@ import org.greenrobot.eventbus.EventBus;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHolder> {
 
   private Activity context;
-  private List<BaseMovie.Movie> moviesList;
+  private List<BaseMovie.Movie> movieList;
 
-  public MoviesAdapter(Activity context, List<BaseMovie.Movie> moviesList) {
+  public MoviesAdapter(Activity context, List<BaseMovie.Movie> movieList) {
     this.context = context;
-    this.moviesList = moviesList;
+    this.movieList = movieList;
   }
 
   @Override public MoviesHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -45,7 +47,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
   }
 
   @Override public void onBindViewHolder(MoviesHolder holder, int position) {
-    fillViewWithData(holder, moviesList.get(position));
+    fillViewWithData(holder, movieList.get(position));
   }
 
   private void fillViewWithData(MoviesHolder holder, BaseMovie.Movie movie) {
@@ -61,8 +63,20 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
     }
   }
 
+  public void updateData(List<BaseMovie.Movie> movieList, boolean newList) {
+    if (newList) {
+      DiffUtil.DiffResult result = DiffUtil.calculateDiff(
+          new MoviesDiffCallback(this.movieList, movieList)
+      );
+      this.movieList.clear();
+      result.dispatchUpdatesTo(this);
+    }
+    this.movieList.addAll(movieList);
+    if (!newList) notifyItemRangeInserted(getItemCount(), this.movieList.size() - 1);
+  }
+
   @Override public int getItemCount() {
-    return moviesList.size();
+    return movieList.size();
   }
 
   public class MoviesHolder extends RecyclerView.ViewHolder {
@@ -73,6 +87,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
     @BindView(R.id.item_tv_movie_name) public TextView movieNameTextView;
     @BindView(R.id.item_tv_movie_year) public TextView movieYearTextView;
     @BindView(R.id.item_tv_movie_genre) public TextView movieGenreTextView;
+    @BindView(R.id.item_view_shared) View sharedView;
 
     @BindString(R.string.no_network) String noConnection;
 
@@ -83,10 +98,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
 
     @OnClick void onClick(View view) {
       if (Utils.isNetworkAvailable(view.getContext())) {
-        BaseMovie.Movie movie = moviesList.get(getLayoutPosition());
+        BaseMovie.Movie movie = movieList.get(getLayoutPosition());
         MovieData data = new MovieData(movie.getId(), movie.getTitle(), movie.getYoutubeCode());
         EventBus.getDefault().postSticky(data);
-        Utils.startAnimatedActivity(context, DetailsActivity.class, view);
+        Utils.startAnimatedActivity(context, DetailsActivity.class, sharedView);
       } else {
         ToastUtil.showShortToast(view.getContext(), noConnection);
       }

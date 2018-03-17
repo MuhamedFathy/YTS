@@ -1,4 +1,4 @@
-package net.mEmoZz.yts.kotlin.data.models
+package net.mEmoZz.yts.kotlin.data.network.models
 
 import com.google.gson.annotations.SerializedName
 

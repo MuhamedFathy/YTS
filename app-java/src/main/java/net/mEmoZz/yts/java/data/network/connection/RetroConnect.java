@@ -1,9 +1,9 @@
-package net.mEmoZz.yts.java.data.connection;
+package net.mEmoZz.yts.java.data.network.connection;
 
 import java.util.concurrent.TimeUnit;
 import net.mEmoZz.yts.java.BuildConfig;
-import net.mEmoZz.yts.java.data.Urls;
-import net.mEmoZz.yts.java.data.webservice.BaseApi;
+import net.mEmoZz.yts.java.data.network.Urls;
+import net.mEmoZz.yts.java.data.network.webservice.BaseApi;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.logging.HttpLoggingInterceptor.Level;

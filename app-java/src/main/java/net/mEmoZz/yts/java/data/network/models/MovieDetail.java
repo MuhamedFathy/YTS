@@ -1,4 +1,4 @@
-package net.mEmoZz.yts.java.data.models;
+package net.mEmoZz.yts.java.data.network.models;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.List;

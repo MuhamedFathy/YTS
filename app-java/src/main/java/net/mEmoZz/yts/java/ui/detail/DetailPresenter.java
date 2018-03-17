@@ -7,8 +7,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import java.util.List;
 import net.mEmoZz.yts.java.data.Quality;
-import net.mEmoZz.yts.java.data.Urls;
-import net.mEmoZz.yts.java.data.models.MovieDetail;
+import net.mEmoZz.yts.java.data.network.Urls;
+import net.mEmoZz.yts.java.data.network.models.MovieDetail;
 import net.mEmoZz.yts.java.ui.detail.adapters.pager.ScreenshotsAdapter;
 import net.mEmoZz.yts.java.ui.detail.adapters.recycler.CastAdapter;
 import net.mEmoZz.yts.java.utilities.FileUtil;
@@ -87,7 +87,12 @@ public class DetailPresenter implements DetailContract.Presenter, DetailInteract
 
   @Override public void subscribeDetail(Activity context, MovieDetail model) {
     movie = model.getData().getMovie();
-    String youtubeUrl = Urls.getYouTubeImgUrl(movie.getYoutubeCode());
+    String youtubeUrl;
+    if (movie.getShot1() != null) {
+      youtubeUrl = movie.getShot1();
+    } else {
+      youtubeUrl = Urls.getYouTubeImgUrl(movie.getYoutubeCode());
+    }
     view.loadImages(youtubeUrl, movie.getPoster(), movie.getBackgroundImage());
     torrents = movie.getTorrents();
     setupQuality();

@@ -1,7 +1,7 @@
 package net.mEmoZz.yts.kotlin.ui.main
 
 import android.content.Context
-import net.mEmoZz.yts.kotlin.data.models.BaseMovie
+import net.mEmoZz.yts.kotlin.data.network.models.BaseMovie
 import net.mEmoZz.yts.kotlin.ui.base.BasePresenter
 import net.mEmoZz.yts.kotlin.ui.base.BaseView
 
