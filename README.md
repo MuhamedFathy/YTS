@@ -42,7 +42,7 @@ This project is just a sample for learning, **DO NOT PUBLISH** it at PlayStore o
 ## Code style
 I used [Square Java code style](https://github.com/square/java-code-styles).
 
-## Inspiration
+## References
 * [Android-Architecture](https://github.com/googlesamples/android-architecture)
 * [AndroidMVP](https://github.com/antoniolg/androidmvp)
 
