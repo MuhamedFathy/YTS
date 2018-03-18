@@ -36,7 +36,6 @@ This project is just a sample for learning, **DO NOT PUBLISH** it at PlayStore o
 * [Glide](https://github.com/bumptech/glide)
 * [GlidePalette](https://github.com/florent37/GlidePalette)
 * [MaterialDialogs](https://github.com/afollestad/material-dialogs)
-* [EventBus](https://github.com/greenrobot/EventBus)
 * [Calligraphy](https://github.com/chrisjenx/Calligraphy)
 
 ## Code style

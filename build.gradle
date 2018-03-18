@@ -13,7 +13,6 @@ ext {
   okHttpVersion = '3.9.0'
   okioVersion = '1.14.0'
   rxPermissionsVersion = '0.9.5@aar'
-  eventBusVersion = '3.1.1'
   glideVersion = '4.6.1'
   glidePaletteVersion = '2.1.2'
   materialProgressVersion = '1.7'

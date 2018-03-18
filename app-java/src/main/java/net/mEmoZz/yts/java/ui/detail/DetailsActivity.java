@@ -31,12 +31,10 @@ import net.mEmoZz.yts.java.data.network.Urls;
 import net.mEmoZz.yts.java.ui.base.BaseActivity;
 import net.mEmoZz.yts.java.ui.detail.adapters.pager.ScreenshotsAdapter;
 import net.mEmoZz.yts.java.ui.detail.adapters.recycler.CastAdapter;
+import net.mEmoZz.yts.java.ui.main.adapters.MoviesAdapter;
 import net.mEmoZz.yts.java.utilities.DialogUtil;
 import net.mEmoZz.yts.java.utilities.GlideUtil;
 import net.mEmoZz.yts.java.utilities.ToastUtil;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import timber.log.Timber;
 
 import static android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
@@ -88,9 +86,9 @@ public class DetailsActivity extends BaseActivity implements DetailContract.View
   @BindDrawable(R.drawable.ic_1080p_quality) Drawable quality1080pDrawable;
 
   private DetailContract.Presenter presenter;
-  private EventBus bus = EventBus.getDefault();
   private DialogUtil dialogUtil;
   private MaterialDialog dialog;
+  private MovieData data;
   private String youtubeCode;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -102,26 +100,9 @@ public class DetailsActivity extends BaseActivity implements DetailContract.View
     new DetailPresenter().onAttach(this, new DetailInteractorImpl());
   }
 
-  @Override protected void onStart() {
-    super.onStart();
-    if (!bus.isRegistered(this)) bus.register(this);
-  }
-
-  @Override protected void onStop() {
-    super.onStop();
-    if (bus.isRegistered(this)) bus.unregister(this);
-  }
-
   @Override protected void onDestroy() {
     presenter.onDestroy();
     super.onDestroy();
-  }
-
-  @Subscribe(sticky = true, threadMode = ThreadMode.MAIN) public void receiveMovie(MovieData data) {
-    youtubeCode = data.getYoutubeCode();
-    setTitle(data.getMovieName());
-    presenter.loadMovieDetails(getContext(), data.getMovieId());
-    bus.removeStickyEvent(data);
   }
 
   @Override public void setPresenter(DetailContract.Presenter presenter) {
@@ -134,12 +115,27 @@ public class DetailsActivity extends BaseActivity implements DetailContract.View
     if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
   }
 
+  @Override public void receiveData() {
+    Intent data = getIntent();
+    if (data != null && data.getExtras() != null) {
+      this.data = data.getParcelableExtra(MoviesAdapter.KEY_MOVIE_DATA);
+      if (this.data != null) {
+        youtubeCode = this.data.getYoutubeCode();
+        setTitle(this.data.getMovieName());
+      }
+    }
+  }
+
   @Override public void setupRecycler() {
     castRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), HORIZONTAL, false));
   }
 
   @Override public void initDialog() {
     dialogUtil = new DialogUtil(getContext());
+  }
+
+  @Override public void loadDetails() {
+    if (data != null) presenter.loadMovieDetails(getContext(), data.getMovieId());
   }
 
   @Override public void loadImages(String tubeUrl, String posterUrl, String backgroundUrl) {

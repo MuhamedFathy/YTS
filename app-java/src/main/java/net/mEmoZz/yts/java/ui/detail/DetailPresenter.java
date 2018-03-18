@@ -34,8 +34,10 @@ public class DetailPresenter implements DetailContract.Presenter, DetailInteract
     this.interactor = interactor;
     this.view.setPresenter(this);
     this.view.setActionBar();
+    this.view.receiveData();
     this.view.setupRecycler();
     this.view.initDialog();
+    this.view.loadDetails();
   }
 
   @Override public void onDestroy() {

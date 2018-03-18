@@ -1,6 +1,8 @@
 package net.mEmoZz.yts.java.ui.main.adapters;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +25,6 @@ import net.mEmoZz.yts.java.ui.main.adapters.callback.MoviesDiffCallback;
 import net.mEmoZz.yts.java.utilities.GlideUtil;
 import net.mEmoZz.yts.java.utilities.ToastUtil;
 import net.mEmoZz.yts.java.utilities.Utils;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Authored by Mohamed Fathy on 08 Mar, 2018.
@@ -31,6 +32,8 @@ import org.greenrobot.eventbus.EventBus;
  */
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHolder> {
+
+  public static final String KEY_MOVIE_DATA = "movieData";
 
   private Activity context;
   private List<BaseMovie.Movie> movieList;
@@ -100,11 +103,17 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
       if (Utils.isNetworkAvailable(view.getContext())) {
         BaseMovie.Movie movie = movieList.get(getLayoutPosition());
         MovieData data = new MovieData(movie.getId(), movie.getTitle(), movie.getYoutubeCode());
-        EventBus.getDefault().postSticky(data);
-        Utils.startAnimatedActivity(context, DetailsActivity.class, sharedView);
+        startAnimatedActivity(context, DetailsActivity.class, data, sharedView);
       } else {
         ToastUtil.showShortToast(view.getContext(), noConnection);
       }
     }
+  }
+
+  private void startAnimatedActivity(Activity context, Class cls, MovieData data, View shared) {
+    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(context, shared, "");
+    Intent intent = new Intent(context, cls);
+    intent.putExtra(KEY_MOVIE_DATA, data);
+    context.startActivity(intent, options.toBundle());
   }
 }

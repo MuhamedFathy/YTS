@@ -1,6 +1,8 @@
 package net.mEmoZz.yts.kotlin.ui.main.adapters
 
 import android.app.Activity
+import android.app.ActivityOptions
+import android.content.Intent
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -12,6 +14,7 @@ import kotlinx.android.synthetic.main.item_movies_list.view.item_card
 import kotlinx.android.synthetic.main.item_movies_list.view.item_tv_movie_genre
 import kotlinx.android.synthetic.main.item_movies_list.view.item_tv_movie_name
 import kotlinx.android.synthetic.main.item_movies_list.view.item_tv_movie_year
+import kotlinx.android.synthetic.main.item_movies_list.view.item_view_shared
 import net.mEmoZz.yts.kotlin.R
 import net.mEmoZz.yts.kotlin.data.bus.MovieData
 import net.mEmoZz.yts.kotlin.data.network.models.BaseMovie
@@ -19,7 +22,6 @@ import net.mEmoZz.yts.kotlin.ui.detail.DetailsActivity
 import net.mEmoZz.yts.kotlin.ui.main.adapters.callback.MoviesDiffCallback
 import net.mEmoZz.yts.kotlin.utilities.GlideUtil
 import net.mEmoZz.yts.kotlin.utilities.Utils
-import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 
 /**
@@ -31,6 +33,10 @@ class MoviesAdapter(
     private val context: Activity,
     private val movieList: MutableList<BaseMovie.Movie>
 ) : RecyclerView.Adapter<MoviesAdapter.MoviesHolder>() {
+
+  companion object {
+    const val KEY_MOVIE_DATA = "movieData"
+  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesHolder {
     val inflater = LayoutInflater.from(parent.context)
@@ -83,11 +89,19 @@ class MoviesAdapter(
       if (Utils.isNetworkAvailable(view.context)) {
         val movie = movieList[layoutPosition]
         val data = MovieData(movie.id, movie.title!!, movie.youtubeCode!!)
-        EventBus.getDefault().postSticky(data)
-        Utils.startAnimatedActivity(context, DetailsActivity::class.java, view)
+        startAnimatedActivity(context, DetailsActivity::class.java, data, view.item_view_shared)
       } else {
         Toast.makeText(view.context, noConnection, Toast.LENGTH_SHORT).show()
       }
     }
+  }
+
+  private fun startAnimatedActivity(
+      context: Activity, cls: Class<*>, data: MovieData, shared: View
+  ) {
+    val options = ActivityOptions.makeSceneTransitionAnimation(context, shared, "")
+    val intent = Intent(context, cls)
+    intent.putExtra(KEY_MOVIE_DATA, data)
+    context.startActivity(intent, options.toBundle())
   }
 }

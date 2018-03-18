@@ -47,12 +47,10 @@ import net.mEmoZz.yts.kotlin.ui.base.BaseActivity
 import net.mEmoZz.yts.kotlin.ui.detail.DetailContract.Presenter
 import net.mEmoZz.yts.kotlin.ui.detail.adapters.pager.ScreenshotsAdapter
 import net.mEmoZz.yts.kotlin.ui.detail.adapters.recycler.CastAdapter
+import net.mEmoZz.yts.kotlin.ui.main.adapters.MoviesAdapter
 import net.mEmoZz.yts.kotlin.utilities.DialogUtil
 import net.mEmoZz.yts.kotlin.utilities.GlideUtil
 import net.mEmoZz.yts.kotlin.utilities.ToastUtil
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 
 /**
@@ -62,11 +60,10 @@ import timber.log.Timber
 
 class DetailsActivity : BaseActivity(), DetailContract.View {
 
-  private val bus = EventBus.getDefault()
-
   private var presenter: Presenter? = null
   private var dialogUtil: DialogUtil? = null
   private var dialog: MaterialDialog? = null
+  private var data: MovieData? = null
   private var youtubeCode: String? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,27 +75,9 @@ class DetailsActivity : BaseActivity(), DetailContract.View {
     DetailPresenter().onAttach(this, DetailInteractorImpl())
   }
 
-
-  override fun onStart() {
-    super.onStart()
-    if (!bus.isRegistered(this)) bus.register(this)
-  }
-
-  override fun onStop() {
-    super.onStop()
-    if (bus.isRegistered(this)) bus.unregister(this)
-  }
-
   override fun onDestroy() {
     presenter!!.onDestroy()
     super.onDestroy()
-  }
-
-  @Subscribe(sticky = true, threadMode = ThreadMode.MAIN) fun receiveMovie(data: MovieData) {
-    youtubeCode = data.youtubeCode
-    title = data.movieName
-    presenter!!.loadMovieDetails(context!!, data.movieId)
-    bus.removeStickyEvent(data)
   }
 
   override fun setPresenter(presenter: DetailContract.Presenter) {
@@ -111,12 +90,27 @@ class DetailsActivity : BaseActivity(), DetailContract.View {
     actionBar?.setDisplayHomeAsUpEnabled(true)
   }
 
+  override fun receiveData() {
+    val data = intent
+    if (data != null && data.extras != null) {
+      this.data = data.getParcelableExtra(MoviesAdapter.KEY_MOVIE_DATA)
+      if (this.data != null) {
+        youtubeCode = this.data!!.youtubeCode
+        title = this.data!!.movieName
+      }
+    }
+  }
+
   override fun setupRecycler() {
     detail_recycler_cast!!.layoutManager = LinearLayoutManager(context!!, HORIZONTAL, false)
   }
 
   override fun initDialog() {
     dialogUtil = DialogUtil(context!!)
+  }
+
+  override fun loadDetails() {
+    if (data != null) presenter!!.loadMovieDetails(context!!, data!!.movieId)
   }
 
   override fun loadImages(tubeUrl: String, posterUrl: String, backgroundUrl: String) {

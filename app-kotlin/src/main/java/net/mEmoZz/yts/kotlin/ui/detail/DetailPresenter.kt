@@ -33,9 +33,11 @@ class DetailPresenter : DetailContract.Presenter, DetailInteractor.DetailListene
     this.interactor = interactor
     this.view!!.setPresenter(this)
     this.view!!.setActionBar()
+    this.view!!.receiveData()
     this.view!!.setupRecycler()
     this.view!!.initDialog()
     this.view!!.initClicks()
+    this.view!!.loadDetails()
   }
 
   override fun onDestroy() {

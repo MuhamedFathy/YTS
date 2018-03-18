@@ -17,9 +17,13 @@ interface DetailContract {
 
   interface View : BaseView<Presenter> {
 
+    fun receiveData()
+
     fun setupRecycler()
 
     fun initDialog()
+
+    fun loadDetails()
 
     fun loadImages(tubeUrl: String, posterUrl: String, backgroundUrl: String)
 

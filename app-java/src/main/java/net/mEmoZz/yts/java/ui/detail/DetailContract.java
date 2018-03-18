@@ -17,9 +17,13 @@ public interface DetailContract {
 
   interface View extends BaseView<Presenter> {
 
+    void receiveData();
+
     void setupRecycler();
 
     void initDialog();
+
+    void loadDetails();
 
     void loadImages(String tubeUrl, String posterUrl, String backgroundUrl);
 
